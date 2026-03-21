@@ -9,6 +9,11 @@ export default function CheckoutPage() {
   const { cart, totalPrice } = useCart();
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [email, setEmail] = useState('');
+  const [name, setName] = useState('');
+  const [address, setAddress] = useState('');
+  const [city, setCity] = useState('');
+  const [zip, setZip] = useState('');
 
   if (cart.length === 0) {
     return (
@@ -19,14 +24,34 @@ export default function CheckoutPage() {
     );
   }
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Simulate payment processing
-    setTimeout(() => {
+
+    try {
+      const response = await fetch('/api/checkout/stripe', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          items: cart,
+          email: email,
+        }),
+      });
+
+      const data = await response.json();
+      if (data.url) {
+        window.location.href = data.url;
+      } else {
+        throw new Error(data.error || 'Something went wrong');
+      }
+    } catch (error: any) {
+      console.error('Checkout error:', error);
+      alert('Payment initialization failed. Please try again.');
+    } finally {
       setLoading(false);
-      router.push('/checkout/success');
-    }, 2000);
+    }
   };
 
   return (
@@ -37,41 +62,56 @@ export default function CheckoutPage() {
         <div className={styles.formSection}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <section>
-              <h3>Shipping Information</h3>
+              <h3>Shipping Information (For Stripe Checkout)</h3>
               <div className={styles.inputGroup}>
-                <input type="text" placeholder="Full Name" required />
-                <input type="email" placeholder="Email Address" required />
-                <input type="text" placeholder="Street Address" required />
+                <input 
+                  type="text" 
+                  placeholder="Full Name" 
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  required 
+                />
+                <input 
+                  type="email" 
+                  placeholder="Email Address" 
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  required 
+                />
+                <input 
+                  type="text" 
+                  placeholder="Street Address" 
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  required 
+                />
                 <div className={styles.twoCol}>
-                  <input type="text" placeholder="City (Berlin)" required />
-                  <input type="text" placeholder="Postal Code" required />
+                  <input 
+                    type="text" 
+                    placeholder="City (Berlin)" 
+                    value={city}
+                    onChange={(e) => setCity(e.target.value)}
+                    required 
+                  />
+                  <input 
+                    type="text" 
+                    placeholder="Postal Code" 
+                    value={zip}
+                    onChange={(e) => setZip(e.target.value)}
+                    required 
+                  />
                 </div>
               </div>
             </section>
 
-            <section style={{ marginTop: '3rem' }}>
-              <h3>Payment Method</h3>
-              <div className={styles.paymentMethods}>
-                <div className={styles.paymentOption}>
-                  <input type="radio" name="payment" id="card" defaultChecked />
-                  <label htmlFor="card">Credit Card (Visa, Mastercard)</label>
-                </div>
-                <div className={styles.paymentOption}>
-                  <input type="radio" name="payment" id="paypal" />
-                  <label htmlFor="paypal">PayPal</label>
-                </div>
-              </div>
-              <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
-                <input type="text" placeholder="Card Number" />
-                <div className={styles.twoCol}>
-                  <input type="text" placeholder="MM/YY" />
-                  <input type="text" placeholder="CVC" />
-                </div>
-              </div>
+            <section style={{ marginTop: '2rem' }}>
+              <p style={{ opacity: 0.7, fontSize: '0.9rem' }}>
+                You will be redirected to Stripe to securely choose your payment method (PayPal, Card, SEPA, etc.) and complete the purchase.
+              </p>
             </section>
 
             <button type="submit" className={styles.payBtn} disabled={loading}>
-              {loading ? 'Processing...' : `Pay €${totalPrice.toLocaleString()}`}
+              {loading ? 'Processing...' : `Continue to Payment (€${totalPrice.toLocaleString()})`}
             </button>
           </form>
         </div>
