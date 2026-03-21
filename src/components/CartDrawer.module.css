@@ -1,0 +1,129 @@
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+  backdrop-filter: blur(4px);
+  z-index: 2000;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.drawer {
+  width: 100%;
+  max-width: 400px;
+  background: rgba(17, 17, 17, 0.95);
+  border-left: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  padding: 2.5rem;
+  color: white;
+  animation: slideIn 0.3s ease-out;
+}
+
+@keyframes slideIn {
+  from { transform: translateX(100%); }
+  to { transform: translateX(0); }
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+}
+
+.closeBtn {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.items {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.empty {
+  text-align: center;
+  color: #666;
+  padding-top: 4rem;
+}
+
+.item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 2rem;
+  border-bottom: 1px solid #333;
+}
+
+.itemInfo {
+  display: flex;
+  flex-direction: column;
+}
+
+.itemInfo strong {
+  font-size: 1rem;
+  margin-bottom: 0.25rem;
+}
+
+.itemInfo span {
+  color: var(--primary);
+  font-weight: 700;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.controls button {
+  background: #222;
+  border: 1px solid #333;
+  color: white;
+  width: 30px;
+  height: 30px;
+  cursor: pointer;
+}
+
+.controls .remove {
+  background: transparent;
+  border: none;
+  font-size: 1.2rem;
+  padding: 0;
+  margin-left: 0.5rem;
+}
+
+.footer {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--border);
+}
+
+.total {
+  display: flex;
+  justify-content: space-between;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2rem;
+}
+
+.checkoutBtn {
+  display: block;
+  width: 100%;
+  padding: 1.2rem;
+  background: var(--primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-weight: 700;
+  cursor: pointer;
+  text-align: center;
+  text-decoration: none;
+}

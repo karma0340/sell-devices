@@ -1,0 +1,174 @@
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 3rem;
+  gap: 2rem;
+}
+
+.header h1 {
+  font-size: 2.5rem;
+  margin-bottom: 0.5rem;
+  color: #111;
+}
+
+.addBtn {
+  background: #111;
+  color: white;
+  border: none;
+  padding: 1rem 2rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  white-space: nowrap;
+}
+
+.tableWrapper {
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+  border: 1px solid #eee;
+  overflow-x: auto; /* Enable horizontal scroll on small screens */
+}
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px;
+}
+
+.table th {
+  text-align: left;
+  padding: 1.2rem 1.5rem;
+  background: #fafafa;
+  border-bottom: 1px solid #eee;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  color: #888;
+  letter-spacing: 0.05em;
+}
+
+.table td {
+  padding: 1.5rem;
+  border-bottom: 1px solid #eee;
+  color: #111;
+}
+
+.nameCell {
+  display: flex;
+  flex-direction: column;
+}
+
+.nameCell strong {
+  font-size: 1rem;
+  color: #111;
+}
+
+.nameCell small {
+  color: #aaa;
+  font-size: 0.75rem;
+}
+
+.actions {
+  display: flex;
+  gap: 0.8rem;
+}
+
+.editBtn, .deleteBtn {
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.editBtn {
+  background: white;
+  border: 1px solid #ddd;
+}
+
+.deleteBtn {
+  background: #fff5f5;
+  color: #e03131;
+  border: 1px solid #ffc9c9;
+}
+
+/* Modal and Form groups remain the same or improved */
+.modalOverlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+  padding: 1.5rem;
+}
+
+.modal {
+  background: white;
+  padding: 2.5rem;
+  border-radius: 16px;
+  width: 100%;
+  max-width: 500px;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.formGroup {
+  margin-bottom: 1.5rem;
+}
+
+.formGroup label {
+  display: block;
+  font-size: 0.85rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: #444;
+}
+
+.formGroup input, .formGroup textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 1rem;
+}
+
+.modalActions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.saveBtn {
+  background: #111 !important;
+  color: white !important;
+}
+
+@media (max-width: 768px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .header h1 {
+    font-size: 2rem;
+  }
+
+  .addBtn {
+    width: 100%;
+  }
+
+  .modal {
+    padding: 1.5rem;
+  }
+}
