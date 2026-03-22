@@ -1,5 +1,6 @@
 'use client';
 
+import { useState } from 'react';
 import { useCart } from '@/context/CartContext';
 import styles from './ProductDetail.module.css';
 import Link from 'next/link';
@@ -7,6 +8,7 @@ import { motion } from 'framer-motion';
 
 export default function ProductDetailClient({ product }: { product: any }) {
   const { addToCart } = useCart();
+  const [imgError, setImgError] = useState(false);
 
   return (
     <div className={styles.container}>
@@ -21,18 +23,18 @@ export default function ProductDetailClient({ product }: { product: any }) {
         transition={{ duration: 0.5 }}
       >
         <div className={styles.imageSection}>
-          <img 
-            src={product.image || '/assets/default.png'} 
-            alt={product.name} 
-            className={styles.productImage}
-            onError={(e) => { 
-                e.currentTarget.style.display = 'none'; 
-                e.currentTarget.nextElementSibling?.setAttribute('style', 'display: flex'); 
-            }}
-          />
-          <div className={styles.imagePlaceholder} style={{ display: !product.image ? 'flex' : 'none' }}>
-            📱
-          </div>
+          {!imgError ? (
+            <img 
+              src={product.image || '/assets/default.png'} 
+              alt={product.name} 
+              className={styles.productImage}
+              onError={() => setImgError(true)}
+            />
+          ) : (
+            <div className={styles.imagePlaceholder}>
+              📱
+            </div>
+          )}
         </div>
 
         <div className={styles.infoSection}>

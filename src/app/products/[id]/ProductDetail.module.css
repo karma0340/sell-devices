@@ -34,14 +34,14 @@
   align-items: center;
   justify-content: center;
   background: rgba(255, 255, 255, 0.03);
-  padding: 4rem;
-  min-height: 400px;
+  padding: 2rem;
+  max-height: 400px;
 }
 
 .productImage {
   width: 100%;
-  max-width: 400px;
-  height: auto;
+  max-width: 250px;
+  max-height: 300px;
   object-fit: contain;
   filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
 }
@@ -153,11 +153,11 @@
     gap: 0;
   }
   .imageSection {
-    padding: 2rem;
-    min-height: 300px;
+    padding: 1.5rem;
+    max-height: 300px;
   }
   .infoSection {
-    padding: 2.5rem 2rem;
+    padding: 2rem 1.5rem;
   }
 }
 
@@ -173,8 +173,8 @@
     margin-bottom: 1.5rem;
   }
   .imageSection {
-    padding: 1.5rem;
-    min-height: 250px;
+    padding: 1rem;
+    max-height: 250px;
   }
   .infoSection {
     padding: 1.5rem 1rem;
