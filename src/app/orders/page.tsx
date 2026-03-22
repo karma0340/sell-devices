@@ -109,6 +109,11 @@ export default async function OrdersPage() {
                   )}
 
                   <div className={styles.deliveryRow}>
+                    <span className={styles.deliveryIcon}>🚚</span>
+                    <div>Estimated Arrival: <strong>{order.deliveryEstimate || '3-5 Business Days'}</strong></div>
+                  </div>
+
+                  <div className={styles.deliveryRow}>
                     <span className={styles.deliveryIcon}>✉️</span>
                     <div>{order.email}</div>
                   </div>

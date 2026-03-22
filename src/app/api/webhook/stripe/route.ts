@@ -63,6 +63,7 @@ export async function POST(req: Request) {
           status: 'PAID',
           address: finalAddress,
           phoneNumber: phone || null,
+          deliveryEstimate: '3-5 Business Days',
           userId: existingUser?.id || (userId && userId !== '' ? userId : null),
         },
       });
