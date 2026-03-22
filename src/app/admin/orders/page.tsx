@@ -1,17 +1,16 @@
+import { prisma } from '@/lib/prisma';
 import styles from '../products/Products.module.css';
 
-export default function AdminOrders() {
-  const orders = [
-    { id: 'ORD-1234', customer: 'Alexander M.', date: '21.03.2026', total: 1449, status: 'Shipped' },
-    { id: 'ORD-1235', customer: 'Elena S.', date: '21.03.2026', total: 399, status: 'Processing' },
-    { id: 'ORD-1236', customer: 'Markus K.', date: '20.03.2026', total: 1339, status: 'Delivered' },
-  ];
+export default async function AdminOrders() {
+  const orders = await prisma.order.findMany({
+    orderBy: { createdAt: 'desc' }
+  });
 
   return (
     <div className={styles.container}>
       <header className={styles.header}>
-        <h1>Customer Orders</h1>
-        <p>Manage and track your smart device sales.</p>
+        <h1 className="gradient-text">Fulfillment Center</h1>
+        <p>Real-time order tracking and customer management.</p>
       </header>
 
       <div className={styles.tableWrapper}>
@@ -20,34 +19,55 @@ export default function AdminOrders() {
             <tr>
               <th>Order ID</th>
               <th>Customer</th>
-              <th>Date</th>
+              <th>Products</th>
               <th>Total</th>
               <th>Status</th>
-              <th>Actions</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {orders.map(order => (
-              <tr key={order.id}>
-                <td><strong>{order.id}</strong></td>
-                <td>{order.customer}</td>
-                <td>{order.date}</td>
-                <td>€{order.total.toLocaleString()}</td>
-                <td>
-                  <span style={{ 
-                    background: order.status === 'Shipped' ? '#e8f0fe' : order.status === 'Delivered' ? '#e6f4ea' : '#fff4e5',
-                    color: order.status === 'Shipped' ? '#1967d2' : order.status === 'Delivered' ? '#1e8e3e' : '#b06000',
-                    padding: '0.25rem 0.6rem',
-                    borderRadius: '4px',
-                    fontSize: '0.75rem',
-                    fontWeight: 600
-                  }}>
-                    {order.status}
-                  </span>
+            {orders.map(order => {
+              const items = order.items as any[];
+              return (
+                <tr key={order.id}>
+                  <td><strong>ORD-{order.id.slice(-6).toUpperCase()}</strong></td>
+                  <td>
+                    <div style={{ fontWeight: 600 }}>{order.customer}</div>
+                    <div style={{ fontSize: '0.75rem', color: '#666' }}>{order.email}</div>
+                  </td>
+                  <td>
+                    <div style={{ fontSize: '0.85rem' }}>
+                      {items.map((item, i) => (
+                        <div key={i}>• {item.name || `Product ${item.id}`} x {item.quantity}</div>
+                      ))}
+                    </div>
+                  </td>
+                  <td>€{order.total.toLocaleString()}</td>
+                  <td>
+                    <span style={{ 
+                      background: order.status === 'PAID' ? '#e6f4ea' : order.status === 'SHIPPED' ? '#e8f0fe' : '#f1f3f4',
+                      color: order.status === 'PAID' ? '#1e8e3e' : order.status === 'SHIPPED' ? '#1967d2' : '#5f6368',
+                      padding: '0.3rem 0.8rem',
+                      borderRadius: '20px',
+                      fontSize: '0.7rem',
+                      fontWeight: 700,
+                      boxShadow: '0 2px 5px rgba(0,0,0,0.05)'
+                    }}>
+                      {order.status}
+                    </span>
+                  </td>
+                  <td>{new Date(order.createdAt).toLocaleDateString()}</td>
+                </tr>
+              );
+            })}
+            {orders.length === 0 && (
+              <tr>
+                <td colSpan={6} style={{ textAlign: 'center', padding: '6rem', color: '#999' }}>
+                  <div style={{ fontSize: '1.5rem', marginBottom: '1rem' }}>📦</div>
+                  No orders have been received yet.
                 </td>
-                <td><button className={styles.editBtn}>View Details</button></td>
               </tr>
-            ))}
+            )}
           </tbody>
         </table>
       </div>

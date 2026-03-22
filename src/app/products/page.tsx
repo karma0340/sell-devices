@@ -1,17 +1,26 @@
-'use client';
-
-import { useState } from 'react';
+import { prisma } from '@/lib/prisma';
 import ProductCard from '@/components/ProductCard';
-import { PRODUCTS } from '@/lib/data';
 import styles from './Products.module.css';
+import Link from 'next/link';
 
-export default function ProductsPage() {
-  const [activeCategory, setActiveCategory] = useState('All');
-  const categories = ['All', ...Array.from(new Set(PRODUCTS.map(p => p.category)))];
+export default async function ProductsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ category?: string }>;
+}) {
+  const { category: activeCategory = 'All' } = await searchParams;
 
-  const filteredProducts = activeCategory === 'All' 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === activeCategory);
+  const [products, allCategoryRecords] = await Promise.all([
+    prisma.product.findMany({
+      include: { category: true },
+      where: activeCategory !== 'All' 
+        ? { category: { name: activeCategory } }
+        : undefined
+    }),
+    prisma.category.findMany()
+  ]);
+
+  const categories = ['All', ...allCategoryRecords.map(c => c.name)];
 
   return (
     <div className="container" style={{ padding: '3rem 0' }}>
@@ -26,20 +35,31 @@ export default function ProductsPage() {
 
       <div className={styles.filterBar}>
         {categories.map(cat => (
-          <button 
+          <Link 
             key={cat}
+            href={`/products?category=${cat}`}
             className={`${styles.filterBtn} ${activeCategory === cat ? styles.active : ''}`}
-            onClick={() => setActiveCategory(cat)}
+            scroll={false}
           >
             {cat}
-          </button>
+          </Link>
         ))}
       </div>
 
       <div className={styles.grid}>
-        {filteredProducts.map(product => (
-          <ProductCard key={product.id} {...product} />
+        {products.map(product => (
+          <ProductCard 
+            key={product.id} 
+            {...product} 
+            id={product.id}
+            category={product.category.name} 
+          />
         ))}
+        {products.length === 0 && (
+          <div style={{ gridColumn: '1/-1', textAlign: 'center', padding: '4rem', color: '#666' }}>
+            No products found in this category.
+          </div>
+        )}
       </div>
     </div>
   );

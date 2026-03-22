@@ -23,7 +23,13 @@ export default function ProductCard(props: ProductCardProps) {
     >
       <div className={styles.imageContainer}>
         <div className={styles.categoryBadge}>{props.category}</div>
-        <div className={styles.imagePlaceholder}>
+        <img 
+          src={props.image || '/assets/default.png'} 
+          alt={props.name} 
+          className={styles.productImage}
+          onError={(e) => { e.currentTarget.style.display = 'none'; e.currentTarget.nextElementSibling?.setAttribute('style', 'display: flex'); }}
+        />
+        <div className={styles.imagePlaceholder} style={{ display: !props.image ? 'flex' : 'none' }}>
           <span style={{ fontSize: '3rem' }}>📱</span>
         </div>
       </div>

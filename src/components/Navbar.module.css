@@ -102,8 +102,43 @@
   display: none;
 }
 
+.desktopOnly {
+  display: flex;
+  align-items: center;
+}
+
 .mobileOnly {
   display: none;
+}
+
+@media (max-width: 768px) {
+  .desktopOnly {
+    display: none !important;
+  }
+  
+  .mobileOnly {
+    display: block !important;
+  }
+}
+
+.authButtons {
+  display: flex;
+  gap: 0.8rem;
+  align-items: center;
+}
+
+.mobileLogout {
+  background: rgba(255, 68, 68, 0.1) !important;
+  color: #ff4444 !important;
+  border: 1px solid rgba(255, 68, 68, 0.2) !important;
+  width: 100%;
+  padding: 0.8rem;
+  font-size: 0.9rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 0.5rem;
 }
 
 @media (max-width: 1024px) {
@@ -118,8 +153,15 @@
   }
 
   .logo {
-    font-size: 1.3rem;
+    font-size: 1.2rem;
     order: 1;
+    letter-spacing: -0.02em;
+  }
+
+  @media (max-width: 400px) {
+    .logo {
+      font-size: 1.05rem;
+    }
   }
 
   .actions {
@@ -146,8 +188,8 @@
     right: 0;
     background: rgba(10, 10, 10, 0.99); /* Near opaque for readability */
     flex-direction: column;
-    padding: 3.5rem 2rem;
-    gap: 2rem;
+    padding: 2rem 1rem;
+    gap: 0.5rem;
     border-bottom: 2px solid var(--primary); /* Premium touch on mobile */
     transform: translateY(-150%);
     transition: transform 0.4s ease-in-out;
@@ -158,10 +200,103 @@
     transform: translateY(0);
   }
 
+  .links a {
+    width: 100%;
+    text-align: center;
+    padding: 0.7rem 0;
+    display: block;
+  }
+
   .mobileOnly {
     display: block;
     border-top: 1px solid #333;
     padding-top: 1.5rem;
     color: var(--primary) !important;
+  }
+}
+
+.userMenu {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin-right: 1rem;
+}
+
+.userName {
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+
+.logoutBtn {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.logoutBtn:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  transform: translateY(-1px);
+}
+
+.loginBtn {
+  background: white;
+  color: black;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-decoration: none;
+  margin-right: 1.5rem;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.loginBtn:hover {
+  background: var(--primary);
+  color: white;
+  box-shadow: 0 0 20px rgba(0, 191, 255, 0.4);
+}
+
+@media (max-width: 768px) {
+  .userMenu {
+    margin-right: 0.5rem;
+  }
+  
+  .userName {
+    display: none;
+  }
+  
+  .loginBtn {
+    padding: 0.5rem 1rem;
+    margin-right: 0.5rem;
+  }
+}
+.signupBtn {
+  background: rgba(255, 255, 255, 0.05);
+  color: white;
+  padding: 0.6rem 1.4rem;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.85rem;
+  text-decoration: none;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  transition: all 0.3s ease;
+}
+
+.signupBtn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  border-color: white;
+}
+
+@media (max-width: 768px) {
+  .signupBtn {
+    display: none; /* Already in dropdown as Create Account */
   }
 }

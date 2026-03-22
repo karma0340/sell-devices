@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: "The city's finest collection of mobile phones and smart tech gadgets in the heart of Berlin.",
 };
 
+import Providers from "@/components/Providers";
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -15,9 +17,11 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning data-scroll-behavior="smooth">
       <body suppressHydrationWarning>
-        <LayoutClient>
-          {children}
-        </LayoutClient>
+        <Providers>
+          <LayoutClient>
+            {children}
+          </LayoutClient>
+        </Providers>
       </body>
     </html>
   );

@@ -1,94 +1,140 @@
 .footer {
-  background: var(--secondary);
-  padding: 2.5rem 0 1.5rem;
+  background: #050505;
+  color: #888;
+  padding: 6rem 0 0;
   border-top: 1px solid var(--border);
-  margin-top: auto;
 }
 
 .footerContainer {
-  display: flex;
-  justify-content: space-between;
-  margin-bottom: 2rem;
+  display: grid;
+  grid-template-columns: 1.5fr 2fr;
+  gap: 4rem;
+  padding-bottom: 5rem;
 }
 
 .info h3 {
+  color: white;
   font-size: 1.5rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
 }
 
 .info p {
-  color: #a5a5a5;
-  font-size: 0.9rem;
-  max-width: 250px;
+  line-height: 1.6;
+  max-width: 300px;
 }
 
 .links {
   display: flex;
-  gap: 5rem;
+  justify-content: space-around;
+  gap: 2rem;
 }
 
 .linkGroup h4 {
-  font-size: 0.9rem;
   color: #666;
   text-transform: uppercase;
-  margin-bottom: 0.8rem;
+  font-size: 0.8rem;
   letter-spacing: 0.1em;
+  margin-bottom: 1.5rem;
 }
 
 .linkGroup a {
   display: block;
-  font-size: 0.9rem;
-  margin-bottom: 0.5rem;
   color: #a5a5a5;
+  text-decoration: none;
+  margin-bottom: 0.8rem;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
 }
 
 .linkGroup a:hover {
   color: white;
+  transform: translateX(4px);
+}
+
+.socials {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.socialLink {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  color: #a5a5a5;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.socialLink svg {
+  color: var(--primary);
+  opacity: 0.7;
+  transition: all 0.2s ease;
+}
+
+.socialLink:hover {
+  color: white;
+  transform: translateX(4px);
+}
+
+.socialLink:hover svg {
+  opacity: 1;
+  transform: scale(1.1);
 }
 
 .bottomBar {
-  padding-top: 1.5rem;
-  border-top: 1px solid var(--border);
-  color: #666;
+  background: #000;
+  padding: 2rem 0;
+  border-top: 1px solid #111;
   font-size: 0.8rem;
+  text-align: center;
+  color: #444;
 }
 
-@media (max-width: 768px) {
+@media (max-width: 900px) {
   .footerContainer {
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 1.5rem;
-    margin-bottom: 1.5rem;
+    grid-template-columns: 1fr;
+    gap: 3rem;
+    padding-bottom: 3rem;
+  }
+  
+  .info {
     text-align: left;
   }
   
-  .links {
-    display: contents; /* Makes linkGroups siblings of .info in the grid */
-  }
-
   .info p {
-    font-size: 0.75rem;
-    max-width: 100%;
+    margin: 0;
   }
-
-  .linkGroup h4 {
-    font-size: 0.75rem;
-    margin-bottom: 0.5rem;
-  }
-
-  .linkGroup a {
-    font-size: 0.75rem;
-    margin-bottom: 0.3rem;
+  
+  .links {
+    justify-content: flex-start;
+    gap: 4rem;
   }
 }
 
-@media (max-width: 480px) {
-  .footerContainer {
-    grid-template-columns: 1.2fr 1fr 1fr; /* Give slightly more space to brand info */
-    gap: 1rem;
+@media (max-width: 600px) {
+  .links {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    width: 100%;
+  }
+
+  .linkGroup h4 {
+    margin-bottom: 1rem;
+    font-size: 0.75rem;
+  }
+
+  .linkGroup a {
+    font-size: 0.85rem;
   }
   
-  .info h3 {
-    font-size: 1rem;
+  .socials {
+    gap: 0.6rem;
+  }
+
+  .socialLink {
+    gap: 0.6rem;
+    font-size: 0.8rem;
   }
 }
