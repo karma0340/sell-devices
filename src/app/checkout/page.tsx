@@ -1,7 +1,7 @@
 'use client';
 
 import { useCart } from '@/context/CartContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import styles from './Checkout.module.css';
 
@@ -10,10 +10,18 @@ export default function CheckoutPage() {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
   const [email, setEmail] = useState('');
-  const [name, setName] = useState('');
-  const [address, setAddress] = useState('');
-  const [city, setCity] = useState('');
-  const [zip, setZip] = useState('');
+  const [session, setSession] = useState<any>(null);
+
+  useEffect(() => {
+    fetch('/api/auth/session')
+      .then(res => res.json())
+      .then(data => {
+        if (data?.user?.email) {
+          setEmail(data.user.email);
+          setSession(data);
+        }
+      });
+  }, []);
 
   if (cart.length === 0) {
     return (
@@ -62,56 +70,32 @@ export default function CheckoutPage() {
         <div className={styles.formSection}>
           <form className={styles.form} onSubmit={handleSubmit}>
             <section>
-              <h3>Shipping Information (For Stripe Checkout)</h3>
-              <div className={styles.inputGroup}>
-                <input 
-                  type="text" 
-                  placeholder="Full Name" 
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
-                  required 
-                />
-                <input 
-                  type="email" 
-                  placeholder="Email Address" 
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  required 
-                />
-                <input 
-                  type="text" 
-                  placeholder="Street Address" 
-                  value={address}
-                  onChange={(e) => setAddress(e.target.value)}
-                  required 
-                />
-                <div className={styles.twoCol}>
+              <h3 style={{ marginBottom: '1.5rem' }}>Secure Checkout</h3>
+              <p style={{ opacity: 0.8, lineHeight: '1.6' }}>
+                You are about to complete your order for <strong>{cart.reduce((acc, i) => acc + i.quantity, 0)} items</strong>.
+              </p>
+              
+              {!email && (
+                <div className={styles.inputGroup} style={{ marginTop: '1.5rem' }}>
                   <input 
-                    type="text" 
-                    placeholder="City (Berlin)" 
-                    value={city}
-                    onChange={(e) => setCity(e.target.value)}
-                    required 
-                  />
-                  <input 
-                    type="text" 
-                    placeholder="Postal Code" 
-                    value={zip}
-                    onChange={(e) => setZip(e.target.value)}
+                    type="email" 
+                    placeholder="Confirm Email Address" 
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
                     required 
                   />
                 </div>
+              )}
+              
+              <div style={{ marginTop: '2rem', padding: '1.5rem', borderRadius: '12px', background: 'rgba(255,255,255,0.03)', border: '1px solid rgba(255,255,255,0.1)' }}>
+                <p style={{ fontSize: '0.9rem', opacity: 0.7 }}>
+                  🛡️ <strong>Encrypted Checkout</strong>: You will be redirected to Stripe to securely provide your shipping address and choosing a payment method.
+                </p>
               </div>
             </section>
 
-            <section style={{ marginTop: '2rem' }}>
-              <p style={{ opacity: 0.7, fontSize: '0.9rem' }}>
-                You will be redirected to Stripe to securely choose your payment method (PayPal, Card, SEPA, etc.) and complete the purchase.
-              </p>
-            </section>
-
-            <button type="submit" className={styles.payBtn} disabled={loading}>
-              {loading ? 'Processing...' : `Continue to Payment (€${totalPrice.toLocaleString()})`}
+            <button type="submit" className={styles.payBtn} disabled={loading} style={{ marginTop: '2rem' }}>
+              {loading ? 'Redircting to Stripe...' : `Proceed to Secure Payment (€${totalPrice.toLocaleString()})`}
             </button>
           </form>
         </div>
