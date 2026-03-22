@@ -25,16 +25,22 @@ export async function POST(req: Request) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.Checkout.Session;
+    const rawSession = event.data.object as any;
     
-    const userId = session.metadata?.userId;
-    const items = JSON.parse(session.metadata?.items || '[]');
-    const total = session.amount_total ? session.amount_total / 100 : 0;
+    // Retrieve the full session to ensure data is fresh
+    const session = await stripe.checkout.sessions.retrieve(rawSession.id, {
+      expand: ['payment_intent'],
+    }) as any;
+
     const customerEmail = session.customer_details?.email || '';
     const customerName = session.customer_details?.name || 'Unknown';
+    const total = session.amount_total ? session.amount_total / 100 : 0;
+    const items = JSON.parse(session.metadata?.items || '[]');
+    const userId = session.metadata?.userId;
 
-    const shipping = (session as any).shipping_details;
-    const phone = session.customer_details?.phone || '';
+    // Multi-source address capture for absolute reliability
+    const shipping = session.shipping_details || session.shipping || session.payment_intent?.shipping;
+    const phone = session.customer_details?.phone || shipping?.phone || '';
 
     const existingUser = await prisma.user.findUnique({ 
       where: { email: customerEmail } 
