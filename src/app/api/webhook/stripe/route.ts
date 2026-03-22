@@ -33,7 +33,7 @@ export async function POST(req: Request) {
     const customerEmail = session.customer_details?.email || '';
     const customerName = session.customer_details?.name || 'Unknown';
 
-    const shipping = session.shipping_details;
+    const shipping = (session as any).shipping_details;
     const phone = session.customer_details?.phone || '';
 
     const existingUser = await prisma.user.findUnique({ 
