@@ -1,7 +1,6 @@
 import { NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { prisma } from '@/lib/prisma';
-import { headers } from 'next/headers';
 import { sendOrderConfirmation } from '@/lib/mail';
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
@@ -11,7 +10,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
 export async function POST(req: Request) {
   console.log('--- 🔔 STRIPE WEBHOOK RECEIVED ---');
   const body = await req.text();
-  const signature = (await headers()).get('stripe-signature') as string;
+  const signature = req.headers.get('stripe-signature') as string;
 
   let event;
 
@@ -37,21 +36,25 @@ export async function POST(req: Request) {
         expand: ['payment_intent'],
       }) as any;
 
-      const customerEmail = session.customer_details?.email || '';
-      const customerName = session.customer_details?.name || 'Unknown';
+      const metaEmail = session.metadata?.userEmail || '';
+      const customerEmail = session.customer_details?.email || metaEmail || '';
+      const customerName = session.customer_details?.name || 'Customer';
       const total = session.amount_total ? session.amount_total / 100 : 0;
       const items = JSON.parse(session.metadata?.items || '[]');
       const userId = session.metadata?.userId;
 
-      // Multi-source address capture for absolute reliability
-      const shipping = session.shipping_details || session.shipping || session.payment_intent?.shipping;
-      const phone = session.customer_details?.phone || shipping?.phone || '';
+      // Multi-source address capture
+      const shipping = session.shipping_details || (session as any).shipping;
+      const customerAddr = session.customer_details?.address;
+      const phone = session.customer_details?.phone || '';
+      const finalAddress = shipping?.address || customerAddr || null;
 
-      console.log(`🔍 Linking order to: ${customerEmail} (User Metadata ID: ${userId})`);
+      console.log(`🔍 Linking order: email=${customerEmail}, address=${JSON.stringify(finalAddress)}, phone=${phone}`);
 
+      // Find user by email (most reliable method)
       const existingUser = await prisma.user.findUnique({ 
         where: { email: customerEmail } 
-      });
+      }) || (userId ? await prisma.user.findUnique({ where: { id: userId } }).catch(() => null) : null);
 
       const order = await prisma.order.create({
         data: {
@@ -60,7 +63,7 @@ export async function POST(req: Request) {
           items: items,
           total: total,
           status: 'PAID',
-          address: shipping?.address || null,
+          address: finalAddress,
           phoneNumber: phone || null,
           userId: existingUser?.id || (userId && userId !== '' ? userId : null),
         },

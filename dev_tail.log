@@ -1,0 +1,30 @@
+﻿reelancing\sell-devices\node_
+modules\next\dist\server\dev\
+next-dev-server.js:390:24)
+    at async invokeRender (E:
+\freelancing\sell-devices\nod
+e_modules\next\dist\server\li
+b\router-server.js:253:21)
+    at async handleRequest (E
+:\freelancing\sell-devices\no
+de_modules\next\dist\server\l
+ib\router-server.js:452:24)
+    at async 
+requestHandlerImpl (E:\freela
+ncing\sell-devices\node_modul
+es\next\dist\server\lib\route
+r-server.js:501:13)
+    at async 
+Server.requestListener (E:\fr
+eelancing\sell-devices\node_m
+odules\next\dist\server\lib\s
+tart-server.js:225:13)
+ POST /api/auth/callback/credentials? 200 in 3.2s (next.js: 7ms, application-code: 3.2s)
+ GET /api/auth/session 200 in 16ms (next.js: 5ms, application-code: 11ms)
+ GET /api/auth/providers 200 in 39ms (next.js: 26ms, application-code: 12ms)
+ GET /api/auth/csrf 200 in 16ms (next.js: 6ms, application-code: 9ms)
+ POST /api/auth/callback/credentials? 200 in 370ms (next.js: 4ms, application-code: 365ms)
+ GET /api/auth/session 200 in 27ms (next.js: 7ms, application-code: 20ms)
+ GET /admin 200 in 2.9s (next.js: 1093ms, proxy.ts: 59ms, application-code: 1735ms)
+ GET /admin 200 in 2.5s (next.js: 16ms, proxy.ts: 132ms, application-code: 2.4s)
+ GET /admin/orders 200 in 1611ms (next.js: 1217ms, proxy.ts: 20ms, application-code: 373ms)

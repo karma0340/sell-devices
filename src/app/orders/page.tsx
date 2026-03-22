@@ -13,7 +13,10 @@ export default async function OrdersPage() {
 
   const orders = await prisma.order.findMany({
     where: {
-      userId: session.user.id,
+      OR: [
+        { userId: session.user.id },
+        { email: session.user.email as string },
+      ]
     },
     orderBy: {
       createdAt: "desc",

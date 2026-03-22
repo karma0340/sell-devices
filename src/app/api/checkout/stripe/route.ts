@@ -39,16 +39,20 @@ export async function POST(req: Request) {
       customer_email: finalEmail,
       metadata: {
         userId: session?.user?.id || '',
+        userEmail: finalEmail || '',
         items: JSON.stringify(items.map((i: any) => ({ 
-          id: i.id || i._id || 'unknown', 
-          name: i.name,
+          id: i.id || i._id || '?', 
+          name: i.name || '',
           quantity: i.quantity, 
           price: i.price,
-          image: i.image || ''
+          image: i.image || '',
         }))),
       },
       shipping_address_collection: {
         allowed_countries: ['DE', 'AT', 'CH', 'IN', 'US', 'GB', 'CA', 'AU', 'FR', 'ES', 'IT'],
+      },
+      phone_number_collection: {
+        enabled: true,
       },
     });
 
