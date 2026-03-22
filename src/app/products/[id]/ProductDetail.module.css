@@ -40,8 +40,8 @@
 
 .productImage {
   width: 100%;
-  max-width: 250px;
-  max-height: 300px;
+  max-width: 400px;
+  max-height: 500px;
   object-fit: contain;
   filter: drop-shadow(0 20px 30px rgba(0,0,0,0.5));
 }
@@ -147,13 +147,17 @@
   box-shadow: 0 10px 20px rgba(0, 240, 255, 0.2);
 }
 
-@media (max-width: 968px) {
+@media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
     gap: 0;
   }
   .imageSection {
     padding: 1.5rem;
+    max-height: 350px;
+  }
+  .productImage {
+    max-width: 300px;
     max-height: 300px;
   }
   .infoSection {
