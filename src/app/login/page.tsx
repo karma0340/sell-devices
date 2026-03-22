@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import styles from './Login.module.css';
+import Link from 'next/link';
 
 export default function LoginPage() {
   const [email, setEmail] = useState('');
@@ -68,6 +69,9 @@ export default function LoginPage() {
               placeholder="••••••••"
               required
             />
+          </div>
+          <div className={styles.forgot}>
+            <Link href="/forgot-password">Forgot your password?</Link>
           </div>
           
           <button type="submit" disabled={loading} className={styles.submitBtn}>

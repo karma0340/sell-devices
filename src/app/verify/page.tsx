@@ -2,7 +2,7 @@
 
 import { useState, useEffect, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
-import { verifyOTP } from '@/actions/verify';
+import { verifyOTP, resendOTP } from '@/actions/verify';
 import styles from './Verify.module.css';
 
 function VerifyContent() {
@@ -14,6 +14,18 @@ function VerifyContent() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [success, setSuccess] = useState(false);
+  const [timer, setTimer] = useState(60);
+  const [resending, setResending] = useState(false);
+
+  useEffect(() => {
+    let interval: NodeJS.Timeout;
+    if (timer > 0) {
+      interval = setInterval(() => {
+        setTimer((prev) => prev - 1);
+      }, 1000);
+    }
+    return () => clearInterval(interval);
+  }, [timer]);
 
   useEffect(() => {
     if (!email) {
@@ -69,6 +81,26 @@ function VerifyContent() {
     }
   };
 
+  const handleResend = async () => {
+    if (timer > 0) return;
+    setResending(true);
+    setError('');
+    
+    try {
+      const result = await resendOTP(email!);
+      if (result.success) {
+        setTimer(60);
+        setError('✅ New code sent to your email.');
+      } else {
+        setError(result.error || 'Failed to resend code.');
+      }
+    } catch (err) {
+      setError('Something went wrong.');
+    } finally {
+      setResending(false);
+    }
+  };
+
   return (
     <div className="container" style={{ padding: '5rem 0' }}>
       <div className={`${styles.card} glass`}>
@@ -106,7 +138,14 @@ function VerifyContent() {
         </form>
 
         <p className={styles.resend}>
-          Didn&apos;t receive it? <button onClick={() => router.push('/register')} disabled={loading}>Try again</button>
+          Didn&apos;t receive it? 
+          <button 
+            onClick={handleResend} 
+            disabled={loading || resending || timer > 0}
+          >
+            {resending ? 'Sending...' : 'Try again'}
+          </button>
+          {timer > 0 && <span className={styles.timer}>in {timer}s</span>}
         </p>
       </div>
     </div>

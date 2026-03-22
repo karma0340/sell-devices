@@ -74,6 +74,25 @@
   box-shadow: 0 0 0 3px rgba(0, 114, 255, 0.2);
 }
 
+.forgot {
+  text-align: right;
+  margin-top: -0.5rem;
+}
+
+.forgot a {
+  color: #0072ff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+}
+
+.forgot a:hover {
+  text-decoration: underline;
+  opacity: 0.8;
+}
+
+
 .submitBtn {
   background: #0072ff;
   color: white;

@@ -1,6 +1,7 @@
 'use server';
 
 import { prisma } from "@/lib/prisma";
+import { sendOTP } from "@/lib/mail";
 
 export async function verifyOTP(email: string, otp: string) {
   if (!email || !otp) {
@@ -44,3 +45,26 @@ export async function verifyOTP(email: string, otp: string) {
     return { error: "Internal server error" };
   }
 }
+
+export async function resendOTP(email: string) {
+  if (!email) return { error: "Missing email" };
+
+  try {
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    const otpExpires = new Date(Date.now() + 10 * 60 * 1000); // 10 minutes
+
+    const user = await prisma.user.update({
+      where: { email },
+      data: { otp, otpExpires }
+    });
+
+    if (!user) return { error: "User not found" };
+
+    await sendOTP(email, otp);
+    return { success: true };
+  } catch (error) {
+    console.error('Resend OTP Error:', error);
+    return { error: "Failed to resend code" };
+  }
+}
+
