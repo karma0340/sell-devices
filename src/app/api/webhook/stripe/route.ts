@@ -48,8 +48,8 @@ export async function POST(req: Request) {
           items: items,
           total: total,
           status: 'PAID',
-          address: shipping ? JSON.stringify(shipping.address) : null,
-          phoneNumber: phone,
+          address: shipping?.address || null,
+          phoneNumber: phone || null,
           userId: existingUser?.id || (userId && userId !== '' ? userId : null),
         },
       });
