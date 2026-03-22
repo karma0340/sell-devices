@@ -33,12 +33,14 @@ export async function POST(req: Request) {
     const customerEmail = session.customer_details?.email || '';
     const customerName = session.customer_details?.name || 'Unknown';
 
-    try {
-      // Find local user by email to link guest orders
-      const existingUser = await prisma.user.findUnique({ 
-        where: { email: customerEmail } 
-      });
+    const shipping = session.shipping_details;
+    const phone = session.customer_details?.phone || '';
 
+    const existingUser = await prisma.user.findUnique({ 
+      where: { email: customerEmail } 
+    });
+
+    try {
       const order = await prisma.order.create({
         data: {
           customer: customerName,
@@ -46,6 +48,8 @@ export async function POST(req: Request) {
           items: items,
           total: total,
           status: 'PAID',
+          address: shipping ? JSON.stringify(shipping.address) : null,
+          phoneNumber: phone,
           userId: existingUser?.id || (userId && userId !== '' ? userId : null),
         },
       });

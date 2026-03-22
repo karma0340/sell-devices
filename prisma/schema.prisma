@@ -91,7 +91,10 @@ model Order {
   email     String
   items     Json
   total     Float
-  status    String   @default("PENDING")
-  user      User?    @relation(fields: [userId], references: [id])
+  status           String   @default("PENDING")
+  deliveryEstimate String?
+  address          Json?
+  phoneNumber      String?
+  user             User?    @relation(fields: [userId], references: [id])
   createdAt DateTime @default(now())
 }
