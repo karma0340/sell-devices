@@ -67,3 +67,31 @@ export const sendOTP = async (email: string, otp: string) => {
     return null;
   }
 };
+export const sendResetOTP = async (email: string, otp: string) => {
+  const mailOptions = {
+    from: `"Berlin Smart Devices" <${process.env.EMAIL_USER}>`,
+    to: email,
+    subject: 'Password Reset OTP - Berlin Smart Devices',
+    html: `
+      <div style="font-family: sans-serif; text-align: center; padding: 40px; background: #fdfdfd;">
+        <div style="max-width: 400px; margin: 0 auto; background: white; padding: 40px; border-radius: 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.05); border: 1px solid #eee;">
+          <h1 style="color: #111; font-size: 20px; margin-bottom: 20px;">Security Reset</h1>
+          <p style="color: #666; font-size: 14px;">Use the following code to reset your account password:</p>
+          <div style="font-size: 36px; font-weight: 800; color: #0072ff; letter-spacing: 0.2em; margin: 30px 0; padding: 20px; background: #f0f7ff; border-radius: 12px;">
+            ${otp}
+          </div>
+          <p style="color: #aaa; font-size: 12px;">This code will expire in 10 minutes. If you did not request a reset, please change your security settings immediately.</p>
+        </div>
+      </div>
+    `,
+  };
+
+  try {
+    const info = await transporter.sendMail(mailOptions);
+    console.log('Reset Email Sent:', info.messageId);
+    return info;
+  } catch (error) {
+    console.error('Mail Error (Reset):', error);
+    return null;
+  }
+};
