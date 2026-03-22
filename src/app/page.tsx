@@ -33,23 +33,23 @@ export default function Home() {
 
       <StoreGallery />
 
-      <section className="glass" style={{ margin: '0.5rem 0', padding: '1.5rem 0', borderLeft: 'none', borderRight: 'none' }}>
+      <section className={`glass ${HomeStyles.advantageSection}`}>
         <div className="container" style={{ textAlign: 'center' }}>
-          <h2 style={{ fontSize: '2.5rem', marginBottom: '1.2rem' }} className="gradient-text">
+          <h2 className={`gradient-text ${HomeStyles.advantageTitle}`}>
             The Berlin Advantage
           </h2>
           <div className={HomeStyles.advantageGrid}>
             <div>
-              <h3 style={{ marginBottom: '0.4rem', color: 'var(--primary)', fontSize: '0.9rem' }}>Same-Day Mitte</h3>
-              <p style={{ color: '#666', fontSize: '0.75rem' }}>Fastest delivery in Mitte. Get your tech in hours.</p>
+              <h3 className={HomeStyles.advantageItemTitle}>Same-Day Mitte</h3>
+              <p className={HomeStyles.advantageItemText}>Fastest delivery in Mitte. Get your tech in hours.</p>
             </div>
             <div>
-              <h3 style={{ marginBottom: '0.4rem', color: 'var(--primary)', fontSize: '0.9rem' }}>Certified Local</h3>
-              <p style={{ color: '#666', fontSize: '0.75rem' }}>Strictly vetted at our Kreuzberg quality center.</p>
+              <h3 className={HomeStyles.advantageItemTitle}>Certified Local</h3>
+              <p className={HomeStyles.advantageItemText}>Strictly vetted at our Kreuzberg quality center.</p>
             </div>
             <div>
-              <h3 style={{ marginBottom: '0.4rem', color: 'var(--primary)', fontSize: '0.9rem' }}>24/7 Support</h3>
-              <p style={{ color: '#666', fontSize: '0.75rem' }}>Real Berliners helping you anytime.</p>
+              <h3 className={HomeStyles.advantageItemTitle}>24/7 Support</h3>
+              <p className={HomeStyles.advantageItemText}>Real Berliners helping you anytime.</p>
             </div>
           </div>
         </div>

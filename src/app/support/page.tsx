@@ -74,8 +74,13 @@ export default function SupportPage() {
         </div>
         <div>
           <h4 style={{ marginBottom: '0.4rem', color: 'var(--primary)', fontSize: '0.85rem', textTransform: 'uppercase' }}>24/7 Hotline</h4>
-          <p style={{ color: '#ccc', fontSize: '0.85rem' }}>+49 30 12345678</p>
+          <p style={{ color: '#ccc', fontSize: '0.85rem' }}>+49 312146738</p>
         </div>
+        <div>
+          <h4 style={{ marginBottom: '0.4rem', color: 'var(--primary)', fontSize: '0.85rem', textTransform: 'uppercase' }}>Email Support</h4>
+          <p style={{ color: '#ccc', fontSize: '0.85rem' }}>marvinlala90@gmail.com</p>
+        </div>
+
       </div>
     </div>
   );
