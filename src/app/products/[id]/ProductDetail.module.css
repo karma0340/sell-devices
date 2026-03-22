@@ -153,21 +153,34 @@
     gap: 0;
   }
   .imageSection {
-    padding: 3rem;
+    padding: 2rem;
+    min-height: 300px;
   }
   .infoSection {
-    padding: 3rem;
+    padding: 2.5rem 2rem;
   }
 }
 
 @media (max-width: 480px) {
+  .container {
+    padding: 2rem 1rem;
+  }
   .title {
-    font-size: 2.2rem;
+    font-size: 1.8rem;
   }
   .price {
-    font-size: 2rem;
+    font-size: 1.6rem;
+    margin-bottom: 1.5rem;
+  }
+  .imageSection {
+    padding: 1.5rem;
+    min-height: 250px;
   }
   .infoSection {
-    padding: 2rem;
+    padding: 1.5rem 1rem;
+  }
+  .addToCartBtn {
+    padding: 1rem 1.5rem;
+    font-size: 1rem;
   }
 }
