@@ -1,0 +1,36 @@
+﻿
+> sell-devices@0.1.0 dev
+> next dev
+
+Γû▓ Next.js 16.2.1 (Turbopack)
+- Local:         http://localhost:3000
+- Network:       http://192.168.0.100:3000
+- Environments: .env
+Γ£ô Ready in 6.2s
+node.exe : ΓÜá Slow 
+filesystem detected. The 
+benchmark took 750ms. If E:\f
+reelancing\sell-devices\.next
+/dev is a network drive, 
+consider moving it to a 
+local folder.
+At line:1 char:1
++ & "C:\Program 
+Files\nodejs/node.exe" "C:\Us
+ers\HP\AppData\Roaming\npm 
+...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~
+    + CategoryInfo           
+   : NotSpecified: (ΓÜá Slo  
+  w filesy...a local folde   
+ r.:String) [], RemoteExc    
+eption
+    + FullyQualifiedErrorId  
+   : NativeCommandError
+ 
+See more: https://nextjs.org/
+docs/app/guides/local-develop
+ment
+Γùï Compiling proxy ...

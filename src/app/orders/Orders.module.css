@@ -132,3 +132,26 @@
   border-radius: 20px;
   border: 2px dashed rgba(255, 255, 255, 0.1);
 }
+
+.deliverySection {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px dashed rgba(255, 255, 255, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.deliveryRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  color: #ccc;
+  font-size: 0.9rem;
+  line-height: 1.4;
+}
+
+.deliveryIcon {
+  font-size: 1.1rem;
+  min-width: 24px;
+}

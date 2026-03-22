@@ -1,0 +1,15 @@
+﻿ GET /assets/hub.png 404 in 1317ms (next.js: 409ms, proxy.ts: 77ms, application-code: 832ms)
+ GET /assets/earbuds.png 404 in 1312ms (next.js: 487ms, proxy.ts: 72ms, application-code: 753ms)
+ GET /api/auth/session 404 in 484ms (next.js: 427ms, application-code: 57ms)
+ GET /api/auth/session 404 in 1235ms (next.js: 1179ms, application-code: 57ms)
+[browser] ClientFetchError: 
+Unexpected token '<', 
+"<!DOCTYPE "... is not valid 
+JSON. Read more at https://er
+rors.authjs.dev#autherror
+[browser] ClientFetchError: 
+Unexpected token '<', 
+"<!DOCTYPE "... is not valid 
+JSON. Read more at https://er
+rors.authjs.dev#autherror
+ POST /api/webhook/stripe 404 in 885ms (next.js: 405ms, application-code: 479ms)

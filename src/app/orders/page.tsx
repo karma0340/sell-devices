@@ -44,9 +44,12 @@ export default async function OrdersPage() {
                   <span className={styles.orderId}>{order.id.slice(-8).toUpperCase()}</span>
                 </div>
                 <div>
-                  <span className={styles.orderLabel}>Date</span>
+                  <span className={styles.orderLabel}>Date & Time</span>
                   <span className={styles.orderDate}>
-                    {new Date(order.createdAt).toLocaleDateString()}
+                    {new Date(order.createdAt).toLocaleString(undefined, {
+                      dateStyle: 'medium',
+                      timeStyle: 'short'
+                    })}
                   </span>
                 </div>
                 <div>
@@ -79,6 +82,38 @@ export default async function OrdersPage() {
                 <span className={styles.totalLabel}>Total Amount</span>
                 <span className={styles.totalAmount}>€{order.total.toLocaleString()}</span>
               </div>
+
+              {(order.address || order.phoneNumber || order.email) && (
+                <div className={styles.deliverySection}>
+                  <span className={styles.orderLabel} style={{ marginBottom: "1rem" }}>Fulfillment Logistics</span>
+                  
+                  {order.address && Object.keys(order.address).length > 0 && (
+                    <div className={styles.deliveryRow}>
+                      <span className={styles.deliveryIcon}>📍</span>
+                      <div>
+                        <div style={{ color: "#fff", fontWeight: "600", marginBottom: "0.25rem" }}>{order.customer}</div>
+                        <div>{(order.address as any)?.line1} {(order.address as any)?.line2}</div>
+                        <div>
+                          {(order.address as any)?.city}, {(order.address as any)?.state} {(order.address as any)?.postal_code}
+                        </div>
+                        <div>{(order.address as any)?.country}</div>
+                      </div>
+                    </div>
+                  )}
+
+                  {order.phoneNumber && (
+                    <div className={styles.deliveryRow}>
+                      <span className={styles.deliveryIcon}>📞</span>
+                      <div>{order.phoneNumber}</div>
+                    </div>
+                  )}
+
+                  <div className={styles.deliveryRow}>
+                    <span className={styles.deliveryIcon}>✉️</span>
+                    <div>{order.email}</div>
+                  </div>
+                </div>
+              )}
             </div>
           ))}
         </div>
