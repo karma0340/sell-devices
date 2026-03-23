@@ -25,7 +25,8 @@ export default function AdminProducts() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
-  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [pendingDelete, setPendingDelete] = useState<Product | null>(null);
+  const timeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   const fetchProducts = async () => {
     try {
@@ -42,31 +43,54 @@ export default function AdminProducts() {
     fetchProducts();
   }, []);
 
-  const handleDelete = async (id: string) => {
-    const isConfirmed = window.confirm('Are you ABSOLUTELY sure? This product will be PERMANENTLY deleted from the inventory!');
-    if (!isConfirmed) {
-      console.log('Deletion cancelled by user.');
-      return;
-    }
-
+  const commitDelete = async (product: Product) => {
     try {
-      setDeletingId(id);
-      console.log('🚀 Confirmed delete triggered for ID:', id);
-      const result = await deleteProductAction(id);
-      
-      if (result?.success) {
-        console.log('✅ Successfully deleted product');
-        await fetchProducts();
+      const result = await deleteProductAction(product.id);
+      if (result?.error) {
+        console.error('Database delete failed:', result.error);
+        alert(`Failed to delete in background: ${result.error}`);
+        // Optionally fetch products again to restore it if DB delete failed
+        fetchProducts(); 
+      } else {
         router.refresh();
-      } else if (result?.error) {
-        console.error('❌ Delete failed:', result.error);
-        alert(`Database Error: ${result.error}`);
       }
     } catch (error) {
-      console.error('💥 Frontend delete error:', error);
-      alert('A critical error occurred. Check browser console.');
-    } finally {
-      setDeletingId(null);
+      console.error('Delete execution error:', error);
+    }
+  };
+
+  const handleDelete = (product: Product) => {
+    const isConfirmed = window.confirm(`Are you sure you want to delete ${product.name}? If yes, it will be removed.`);
+    if (!isConfirmed) return;
+
+    // If there is already a pending delete, execute it immediately
+    if (pendingDelete && timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      commitDelete(pendingDelete);
+    }
+
+    // Move to pending delete and remove from UI
+    setPendingDelete(product);
+    setProducts(prev => prev.filter(p => p.id !== product.id));
+
+    // Schedule actual database deletion
+    timeoutRef.current = setTimeout(() => {
+      commitDelete(product);
+      setPendingDelete(null);
+    }, 8000); // 8 seconds to undo
+  };
+
+  const handleUndo = () => {
+    if (timeoutRef.current) {
+      clearTimeout(timeoutRef.current);
+      timeoutRef.current = null;
+    }
+    if (pendingDelete) {
+      setProducts(prev => {
+        // Place it back at the top for visibility, or we could sort by original index
+        return [pendingDelete, ...prev];
+      });
+      setPendingDelete(null);
     }
   };
 
@@ -183,10 +207,9 @@ export default function AdminProducts() {
                     <button className={styles.editBtn} onClick={() => handleEdit(product)}>Edit</button>
                     <button 
                       className={styles.deleteBtn} 
-                      onClick={() => handleDelete(product.id)}
-                      disabled={deletingId === product.id}
+                      onClick={() => handleDelete(product)}
                     >
-                      {deletingId === product.id ? 'Deleting...' : 'Delete'}
+                      Delete
                     </button>
                   </div>
                 </td>
@@ -288,6 +311,14 @@ export default function AdminProducts() {
               </div>
             </form>
           </div>
+        </div>
+      )}
+
+      {/* Undo Toast Notification */}
+      {pendingDelete && (
+        <div className={styles.undoToast}>
+          <span><strong>{pendingDelete.name}</strong> was deleted.</span>
+          <button onClick={handleUndo} className={styles.undoBtn}>Undo</button>
         </div>
       )}
     </div>
