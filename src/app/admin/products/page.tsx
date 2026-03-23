@@ -43,9 +43,15 @@ export default function AdminProducts() {
   }, []);
 
   const handleDelete = async (id: string) => {
+    const isConfirmed = window.confirm('Are you ABSOLUTELY sure? This product will be PERMANENTLY deleted from the inventory!');
+    if (!isConfirmed) {
+      console.log('Deletion cancelled by user.');
+      return;
+    }
+
     try {
       setDeletingId(id);
-      console.log('🚀 Direct delete triggered for ID:', id);
+      console.log('🚀 Confirmed delete triggered for ID:', id);
       const result = await deleteProductAction(id);
       
       if (result?.success) {
