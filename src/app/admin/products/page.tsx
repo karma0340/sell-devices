@@ -14,6 +14,8 @@ interface Product {
   features: string[];
 }
 
+import { deleteProductAction } from '@/actions/product';
+
 export default function AdminProducts() {
   const [products, setProducts] = useState<Product[]>([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -23,10 +25,17 @@ export default function AdminProducts() {
   const fileInputRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
 
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+
   const fetchProducts = async () => {
-    const res = await fetch('/api/admin/products');
-    const data = await res.json();
-    setProducts(data);
+    try {
+      const res = await fetch('/api/admin/products');
+      if (!res.ok) throw new Error('API fetch failed');
+      const data = await res.json();
+      setProducts(data);
+    } catch (err) {
+      console.error('Fetch error:', err);
+    }
   };
 
   useEffect(() => {
@@ -34,20 +43,24 @@ export default function AdminProducts() {
   }, []);
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this product?')) {
-      try {
-        const res = await fetch(`/api/admin/products?id=${id}`, { method: 'DELETE' });
-        if (res.ok) {
-          await fetchProducts();
-          router.refresh();
-        } else {
-          const errorData = await res.json();
-          alert(`Failed to delete product: ${errorData.error || 'Unknown error'}`);
-        }
-      } catch (error) {
-        console.error('Delete error:', error);
-        alert('An error occurred while deleting the product.');
+    try {
+      setDeletingId(id);
+      console.log('🚀 Direct delete triggered for ID:', id);
+      const result = await deleteProductAction(id);
+      
+      if (result?.success) {
+        console.log('✅ Successfully deleted product');
+        await fetchProducts();
+        router.refresh();
+      } else if (result?.error) {
+        console.error('❌ Delete failed:', result.error);
+        alert(`Database Error: ${result.error}`);
       }
+    } catch (error) {
+      console.error('💥 Frontend delete error:', error);
+      alert('A critical error occurred. Check browser console.');
+    } finally {
+      setDeletingId(null);
     }
   };
 
@@ -162,7 +175,13 @@ export default function AdminProducts() {
                 <td>
                   <div className={styles.actions}>
                     <button className={styles.editBtn} onClick={() => handleEdit(product)}>Edit</button>
-                    <button className={styles.deleteBtn} onClick={() => handleDelete(product.id)}>Delete</button>
+                    <button 
+                      className={styles.deleteBtn} 
+                      onClick={() => handleDelete(product.id)}
+                      disabled={deletingId === product.id}
+                    >
+                      {deletingId === product.id ? 'Deleting...' : 'Delete'}
+                    </button>
                   </div>
                 </td>
               </tr>
