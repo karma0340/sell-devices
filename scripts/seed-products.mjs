@@ -7,7 +7,7 @@ const PRODUCTS = [
     name: 'iPhone 15 Pro',
     description: 'The latest iPhone with Titanium design and the A17 Pro chip.',
     price: 1199,
-    image: 'https://images.unsplash.com/photo-1696446701796-da61225697cc?auto=format&fit=crop&q=80&w=800',
+    image: '/assets/iphone.png',
     category: 'Phones',
     features: ['Titanium Case', 'A17 Pro Chip', 'Action Button', 'USB-C']
   },
@@ -15,41 +15,41 @@ const PRODUCTS = [
     name: 'Samsung Galaxy S24 Ultra',
     description: 'The ultimate smartphone experience with Galaxy AI.',
     price: 1339,
-    image: 'https://images.unsplash.com/photo-1707151022228-25501cfee79e?auto=format&fit=crop&q=80&w=800',
+    image: '/assets/samsung.png',
     category: 'Phones',
     features: ['Galaxy AI', 'S Pen Included', '200MP Camera', 'Snapdragon 8 Gen 3']
   },
   {
-    name: 'MacBook Pro M3 Max',
-    description: 'The most powerful laptop for the most demanding pro workflows.',
+    name: 'Berlin Vision Max',
+    description: 'Next-generation spatial computing with immersion like never before.',
     price: 3499,
-    image: 'https://images.unsplash.com/photo-1517336714467-d13a23234e48?auto=format&fit=crop&q=80&w=800',
-    category: 'Laptops',
-    features: ['M3 Max Chip', 'Liquid Retina XDR', '128GB Unified Memory', '22h Battery Life']
+    image: '/assets/vr.png',
+    category: 'Metaverse',
+    features: ['4K Micro-OLED', 'Spatial Audio', 'Dual Chip Design', 'Eye & Hand Tracking']
   },
   {
-    name: 'AirPods Pro Gen 2',
-    description: 'Pro performance in every note. Magic in every touch.',
+    name: 'Pro Tech Earbuds',
+    description: 'Crystal clear sound with adaptive noise cancellation.',
     price: 279,
-    image: 'https://images.unsplash.com/photo-1588423770110-316279f0607d?auto=format&fit=crop&q=80&w=800',
+    image: '/assets/earbuds.png',
     category: 'Audio',
-    features: ['Active Noise Cancellation', 'Adaptive Audio', 'Personalized Spatial Audio', '6h Battery']
+    features: ['Active Noise Cancellation', 'Adaptive Audio', '6h Battery', 'Touch Control']
   },
   {
-    name: 'Apple Watch Ultra 2',
-    description: 'The most rugged and capable Apple Watch ever.',
-    price: 899,
-    image: 'https://images.unsplash.com/photo-1544117518-30dfd64134b1?auto=format&fit=crop&q=80&w=800',
-    category: 'Wearables',
-    features: ['49mm Titanium Case', 'Dual Frequency GPS', '3000 nits display', '72h Low Power Mode']
-  },
-  {
-    name: 'Sony WH-1000XM5',
-    description: 'World leading noise canceling for pure silence.',
+    name: 'Pixel Watch Pro',
+    description: 'The best of Google and Fitbit, perfectly balanced.',
     price: 399,
-    image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&q=80&w=800',
-    category: 'Audio',
-    features: ['Auto NC Optimizer', 'Multipoint Connection', '30h Battery Life', 'Speak-to-Chat']
+    image: '/assets/pixel.png',
+    category: 'Wearables',
+    features: ['Always-on Display', 'ECG Monitoring', 'Fall Detection', '4G LTE']
+  },
+  {
+    name: 'Smart Home Hub',
+    description: 'The heart of your modern Berlin home automation.',
+    price: 199,
+    image: '/assets/hub.png',
+    category: 'Smart Home',
+    features: ['10-inch Touchscreen', 'Built-in Zigbee', 'Video Calling', 'Privacy Shutter']
   }
 ];
 

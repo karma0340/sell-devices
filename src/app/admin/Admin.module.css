@@ -110,6 +110,11 @@
   border-radius: 2px;
 }
 
+.activityList {
+  display: flex;
+  flex-direction: column;
+}
+
 .activityItem {
   display: flex;
   justify-content: space-between;
@@ -127,16 +132,67 @@
   border-bottom: none;
 }
 
-.activityItem p {
-  font-size: 1rem;
+.activityMain {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.orderId {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.orderId strong {
+  font-size: 1.05rem;
   color: #111;
 }
 
-.activityItem strong {
-  margin-right: 0.5rem;
+.statusBadge {
+  font-size: 0.7rem;
+  font-weight: 700;
+  padding: 0.25rem 0.6rem;
+  border-radius: 6px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
-.activityItem span {
+.statusBadge[data-status="PAID"] {
+  background: #e6fcf5;
+  color: #0ca678;
+}
+
+.statusBadge[data-status="PENDING"] {
+  background: #fff9db;
+  color: #f08c00;
+}
+
+.statusBadge[data-status="SHIPPED"] {
+  background: #e7f5ff;
+  color: #1c7ed6;
+}
+
+.statusBadge[data-status="DELIVERED"] {
+  background: #f1f3f5;
+  color: #495057;
+}
+
+.orderMeta {
+  font-size: 0.95rem;
+  color: #666;
+}
+
+.orderMeta strong {
+  color: #111;
+}
+
+.activityRight {
+  display: flex;
+  align-items: center;
+}
+
+.date {
   font-size: 0.85rem;
   font-weight: 600;
   color: #888;
@@ -147,9 +203,21 @@
 
 .emptyActivity {
   text-align: center;
-  padding: 4rem;
+  padding: 5rem 2rem;
   color: #888;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.emptyActivity span {
+  font-size: 3rem;
+  opacity: 0.5;
+}
+
+.emptyActivity p {
   font-style: italic;
+  font-size: 1.1rem;
 }
 
 @media (max-width: 768px) {

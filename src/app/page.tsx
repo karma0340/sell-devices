@@ -2,10 +2,20 @@ import Link from 'next/link';
 import Hero from '@/components/Hero';
 import ProductCard from '@/components/ProductCard';
 import StoreGallery from '@/components/StoreGallery';
-import { PRODUCTS } from '@/lib/data';
+import { prisma } from '@/lib/prisma';
 import HomeStyles from './Home.module.css';
 
-export default function Home() {
+export default async function Home() {
+  const rawProducts = await prisma.product.findMany({
+    include: { category: true },
+    orderBy: { createdAt: 'desc' },
+  });
+
+  const products = rawProducts.map(p => ({
+    ...p,
+    category: p.category?.name || 'Uncategorized'
+  }));
+
   return (
     <>
       <Hero />
@@ -24,7 +34,7 @@ export default function Home() {
           </div>
 
           <div className={HomeStyles.productGrid}>
-            {PRODUCTS.map(product => (
+            {products.map(product => (
               <ProductCard key={product.id} {...product} />
             ))}
           </div>

@@ -35,9 +35,19 @@ export default function AdminProducts() {
 
   const handleDelete = async (id: string) => {
     if (confirm('Are you sure you want to delete this product?')) {
-      await fetch(`/api/admin/products?id=${id}`, { method: 'DELETE' });
-      fetchProducts();
-      router.refresh();
+      try {
+        const res = await fetch(`/api/admin/products?id=${id}`, { method: 'DELETE' });
+        if (res.ok) {
+          await fetchProducts();
+          router.refresh();
+        } else {
+          const errorData = await res.json();
+          alert(`Failed to delete product: ${errorData.error || 'Unknown error'}`);
+        }
+      } catch (error) {
+        console.error('Delete error:', error);
+        alert('An error occurred while deleting the product.');
+      }
     }
   };
 

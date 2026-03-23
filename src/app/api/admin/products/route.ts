@@ -2,6 +2,8 @@ import { NextResponse } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/auth';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET() {
   const session = await auth();
   if (session?.user?.role !== 'ADMIN') {
@@ -36,6 +38,10 @@ export async function POST(req: Request) {
   try {
     const { id, name, category, price, description, image, features } = await req.json();
 
+    if (!name || isNaN(price)) {
+      return NextResponse.json({ error: 'Name and price are required' }, { status: 400 });
+    }
+
     // Find or create category
     const categoryRecord = await prisma.category.upsert({
       where: { name: category || 'Uncategorized' },
@@ -46,7 +52,7 @@ export async function POST(req: Request) {
     const data = {
       name,
       price: parseFloat(price?.toString() || '0'),
-      description,
+      description: description || '',
       features: Array.isArray(features) ? features : [],
       image: image || '/assets/default.png',
       categoryId: categoryRecord.id,

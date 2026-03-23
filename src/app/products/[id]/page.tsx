@@ -1,7 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
 import ProductDetailClient from './ProductDetailClient';
-import { PRODUCTS } from '@/lib/data';
 
 export default async function ProductDetailPage({
   params,
@@ -10,23 +9,7 @@ export default async function ProductDetailPage({
 }) {
   const { id } = await params;
 
-  if (!id) {
-    notFound();
-  }
-
-  // Intercept hardcoded items from the landing page to prevent MongoDB BSON length errors
-  if (id.length < 24) {
-    const staticProduct = PRODUCTS.find((p) => p.id === id);
-    if (staticProduct) {
-      return (
-        <ProductDetailClient 
-          product={{
-            ...staticProduct,
-            category: { name: staticProduct.category }
-          }} 
-        />
-      );
-    }
+  if (!id || id.length < 24) {
     notFound();
   }
 

@@ -1,6 +1,8 @@
 import { prisma } from '@/lib/prisma';
 import styles from './Admin.module.css';
 
+export const dynamic = 'force-dynamic';
+
 export default async function AdminDashboard() {
   const [productCount, orderCount, revenueData, userCount, recentOrders] = await Promise.all([
     prisma.product.count(),
@@ -11,7 +13,7 @@ export default async function AdminDashboard() {
     prisma.user.count({ where: { role: 'USER' } }),
     prisma.order.findMany({
       orderBy: { createdAt: 'desc' },
-      take: 5
+      take: 6
     })
   ]);
 
@@ -45,19 +47,37 @@ export default async function AdminDashboard() {
 
       <div className={styles.recentActivity}>
         <h2>Recent Live Orders</h2>
-        {recentOrders.length === 0 ? (
-          <p className={styles.emptyActivity}>No orders yet.</p>
-        ) : (
-          recentOrders.map((order) => (
-            <div key={order.id} className={styles.activityItem}>
-              <p>
-                <strong>Order #{order.id.slice(-6).toUpperCase()}</strong> - 
-                €{order.total.toLocaleString()} by {order.customer}
-              </p>
-              <span>{new Date(order.createdAt).toLocaleDateString()}</span>
+        <div className={styles.activityList}>
+          {recentOrders.length === 0 ? (
+            <div className={styles.emptyActivity}>
+              <span>📭</span>
+              <p>No orders recorded yet.</p>
             </div>
-          ))
-        )}
+          ) : (
+            recentOrders.map((order) => {
+              const items = order.items as any[];
+              const itemCount = items.reduce((acc, curr) => acc + (curr.quantity || 1), 0);
+              return (
+                <div key={order.id} className={styles.activityItem}>
+                  <div className={styles.activityMain}>
+                    <div className={styles.orderId}>
+                      <strong>#{order.id.slice(-6).toUpperCase()}</strong>
+                      <span className={styles.statusBadge} data-status={order.status}>
+                        {order.status}
+                      </span>
+                    </div>
+                    <p className={styles.orderMeta}>
+                      €{order.total.toLocaleString()} - {itemCount} {itemCount === 1 ? 'item' : 'items'} by <strong>{order.customer}</strong>
+                    </p>
+                  </div>
+                  <div className={styles.activityRight}>
+                    <span className={styles.date}>{new Date(order.createdAt).toLocaleDateString()}</span>
+                  </div>
+                </div>
+              );
+            })
+          )}
+        </div>
       </div>
     </div>
   );

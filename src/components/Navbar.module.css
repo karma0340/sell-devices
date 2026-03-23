@@ -4,7 +4,7 @@
   left: 0;
   right: 0;
   height: 80px;
-  background: rgba(0, 0, 0, 0.85); /* Slightly darker for better contrast */
+  background: rgba(0, 0, 0, 0.9); /* Slightly darker for better contrast */
   backdrop-filter: blur(25px);
   -webkit-backdrop-filter: blur(25px);
   border-bottom: 1px solid var(--border);
